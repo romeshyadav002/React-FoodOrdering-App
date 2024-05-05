@@ -1,20 +1,25 @@
 import React from 'react';
 import { ReactDOM, createRoot } from 'react-dom/client';
 
-//React.createElement is a JS Object
+//React.createElement => ReactElement -JS object => HTMLElement(render)
 const heading = React.createElement(
-    "div", //Which tag to be created?
-    {id : "parent"}, //attributes
-    React.createElement("div", {id : "child"}, 
-    [React.createElement("h1", {id : "child1"}, "I'm a h1 tag"),
-    React.createElement("h2", {id : "child2"}, "I'm a h2 tag")])
-);//what to display?
+  'h1',
+  { id: 'heading' },
+  'Namaste React 🚀',
+);
+console.log(heading);
+
+// JSX (transpiled before it reaches the JS)- PARCEL - BABEL
+// JSX => React.createElement => ReactElement -JS object => HTMLElement(render)
+const jsxHeading = <h1 id="heading">Namaste React using JSX 🚀</h1>;
+
+console.log(jsxHeading);
 
 //Rendering react
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById('root'));
 
 /*
 render() => renders a JS object(heading) and 
 creates the tag which browser understands puts it up in the DOM.
 */
-root.render(heading);
+root.render(jsxHeading);
