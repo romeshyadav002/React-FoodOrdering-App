@@ -70,6 +70,7 @@ const Body = () => {
               <RestaurantCard key={restaurant.info.id} resData={restaurant} />
             ))
           : //showing all the restaurants
+            listOfRestaurants &&
             listOfRestaurants.map((restaurant) => (
               <Link
                 to={'/restaurant/' + restaurant.info.id}
