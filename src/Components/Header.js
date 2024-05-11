@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { LOGO_URL } from '../utils/constant';
-import LOGO_URL from './assets/logo.png';
 import { Link } from 'react-router-dom';
 import useOnlineStatus from '../utils/useOnlineStatus';
+import UserContext from '../utils/UserContext';
 
 //1. Header Component
 const Header = () => {
   const [btnName, setBtnName] = useState('Login');
-  const onlineStatus = useOnlineStatus();
+  const onlineStatus = useOnlineStatus(); //show login status through custom hook
+
+  //fetching data from context
+  const { loggedInUser } = useContext(UserContext);
 
   return (
     <nav className="flex flex-wrap mx-auto items-center justify-between p-6 lg:px-8 text-slate-300 bg-sky-800">
@@ -38,6 +41,7 @@ const Header = () => {
           >
             {btnName}
           </button>
+          <li className="p-2 font-bold">{loggedInUser}</li>
         </ul>
       </div>
     </nav>
