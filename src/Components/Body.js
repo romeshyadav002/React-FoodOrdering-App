@@ -1,15 +1,15 @@
 import RestaurantCard from './RestaurantCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
-import useRestaurantList from '../utils/useRestaurantList';
 import useOnlineStatus from '../utils/useOnlineStatus';
+import useRestaurantList from '../utils/useRestaurantList';
 
 //2. Body Component
 const Body = () => {
+  //Local state variable = Super powerful variable
   const [filteredRestaurants, setFilteredRestaurants] = useState([]); //Filtered Restaurants
   const [searchRestaurant, setSearchRestaurant] = useState(''); //Search Restaurants
-
   const onlineStatus = useOnlineStatus(); //fetching online status through custom hook.
   const listOfRestaurants = useRestaurantList(); //fetching restaurants list through custom hook.
 
@@ -17,42 +17,27 @@ const Body = () => {
   if (onlineStatus === false)
     return <h1>Looks your offline. Check your internet connection.</h1>;
 
-  return !listOfRestaurants || listOfRestaurants?.length === 0 ? (
-    <Shimmer />
-  ) : (
-    <div className="body">
-      <div className="filter">
+  if (listOfRestaurants.length === 0) return <Shimmer />;
+
+  return (
+    <>
+      <section className="">
         <input
+          className="border-2 border-slate-400 m-4 p-1"
           type="text"
           value={searchRestaurant}
           onChange={(e) => {
             setSearchRestaurant(e.target.value);
-            // const filteredRes = listOfRestaurants.filter((res) => {
-            //   return res.info.name
-            //     .toLowerCase()
-            //     .includes(searchRestaurant.toLowerCase());
-            // });
-
-            // setFilteredRestaurants(filteredRes);
-          }}
-        />
-        <button
-          className="res-search"
-          onClick={() => {
             const filteredRes = listOfRestaurants.filter((res) => {
               return res.info.name
                 .toLowerCase()
                 .includes(searchRestaurant.toLowerCase());
             });
-
             setFilteredRestaurants(filteredRes);
           }}
-        >
-          Search
-        </button>
-
+        />
         <button
-          className="res-filter"
+          className="bg-sky-800 text-slate-200 p-2 rounded hover:bg-sky-950"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
               (restaurants) => restaurants.info.avgRating > 4,
@@ -62,8 +47,8 @@ const Body = () => {
         >
           Top Rated Restaurants
         </button>
-      </div>
-      <div className="res-container">
+      </section>
+      <section className="flex flex-wrap">
         {searchRestaurant.length > 0
           ? //showing only filtered restaurants
             filteredRestaurants.map((restaurant) => (
@@ -78,11 +63,9 @@ const Body = () => {
                 <RestaurantCard key={restaurant.info.id} resData={restaurant} />
               </Link>
             ))}
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 
 export default Body;
-
-//use cors proxy chrome extension

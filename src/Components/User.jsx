@@ -41,11 +41,11 @@ class User extends React.Component {
     console.log(`4. ${this.props.child} Child's render`);
     const { name, location, avatar_url } = this.state.userInfo;
     return (
-      <div>
-        <img src={avatar_url} />
-        <h2>{name}</h2>
-        <h2>{location}</h2>
-      </div>
+      <section className="w-64 bg-slate-200 text-slate-700 m-4 p-2">
+        <img src={avatar_url} className="rounded p-4" />
+        <h2 className="p-4 text-slate-500 font-bold">{name}</h2>
+        <h3 clasName="p-4">{location}</h3>
+      </section>
     );
   }
 }
