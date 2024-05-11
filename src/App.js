@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from './Components/Header';
 import Body from './Components/Body';
@@ -6,8 +6,11 @@ import About from './Components/About';
 import Error from './Components/Error';
 import Contacts from './Components/Contacts';
 import RestaurantMenu from './Components/RestaurantMenu';
+import Loading from './Components/Loading';
 
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+//on demand lazy loading while clicking on Grocery for making it as a small bundler, check it in dist folder
+const Grocery = lazy(() => import('./Components/Grocery'));
 
 /*
     1. Header
@@ -45,6 +48,14 @@ const appRouter = createBrowserRouter([
       {
         path: '/about',
         element: <About />,
+      },
+      {
+        path: '/grocery',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Grocery />
+          </Suspense>
+        ),
       },
       {
         path: '/contacts',

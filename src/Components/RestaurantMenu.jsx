@@ -1,26 +1,12 @@
-import { useState, useEffect } from 'react';
-import { SWIGGY_MENU_API_URL } from '../utils/constant';
 import { useParams } from 'react-router-dom';
 import Shimmer from './Shimmer';
+import useRestaurantMenu from '../utils/useRestaurantMenu';
 
 const RestaurantMenu = () => {
   const { resId } = useParams(); //call useParam to get value of restaurant Id(resId) using object destructuring.
-  const [restaurant, setRestaurant] = useState(null); //holds a restaurant details
 
-  //calls only once after the initial component render
-  useEffect(() => {
-    getRestaurantInfo();
-  }, []);
-
-  //get restaurant details
-  const getRestaurantInfo = async () => {
-    const restaurantData = await fetch(SWIGGY_MENU_API_URL + resId); //fetching menu data
-    const jsonResData = await restaurantData.json(); //converting fetched data to json
-
-    //set restaurant
-    setRestaurant(jsonResData.data);
-  };
-
+  //fetching restaurant info from custom hook (useRestaurantMenu)
+  const restaurant = useRestaurantMenu(resId);
   if (restaurant === null) return <Shimmer />;
 
   //destructuring the restaurant info
@@ -61,21 +47,23 @@ const RestaurantMenu = () => {
         <p>💵{costForTwoMessage}</p>
       </section>
       <hr />
-      <section className="res-recomends">
-        <h2>Recommended ({itemCards.length})</h2>
-        <ul>
-          {itemCards.map((item) => (
-            <li key={item.card.info.id}>
-              <h3>{item.card.info.name}</h3>
-              <p>
-                {' Rs.'}{' '}
-                {item.card.info.price / 100 ||
-                  item.card.info.defaultPrice / 100}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {itemCards && itemCards.length > 0 && (
+        <section className="res-recomends">
+          <h2>Recommended ({itemCards.length})</h2>
+          <ul>
+            {itemCards.map((item) => (
+              <li key={item.card.info.id}>
+                <h3>{item.card.info.name}</h3>
+                <p>
+                  {' Rs.'}{' '}
+                  {item.card.info.price / 100 ||
+                    item.card.info.defaultPrice / 100}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 };

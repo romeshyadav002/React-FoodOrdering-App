@@ -1,40 +1,21 @@
 import RestaurantCard from './RestaurantCard';
-import { SWIGGY_API_URL } from '../utils/constant';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
+import useRestaurantList from '../utils/useRestaurantList';
+import useOnlineStatus from '../utils/useOnlineStatus';
 
 //2. Body Component
 const Body = () => {
-  //Local state variable = Super powerful variable
-  const [listOfRestaurants, setListOfRestaurants] = useState([]); //All Restaurants
   const [filteredRestaurants, setFilteredRestaurants] = useState([]); //Filtered Restaurants
   const [searchRestaurant, setSearchRestaurant] = useState(''); //Search Restaurants
 
-  //useEffect(2 params) - callback function, dependencies
-  useEffect(() => {
-    getRestaurants();
-  }, []);
+  const onlineStatus = useOnlineStatus(); //fetching online status through custom hook.
+  const listOfRestaurants = useRestaurantList(); //fetching restaurants list through custom hook.
 
-  //get restaurants list
-  const getRestaurants = async () => {
-    //making swiggy api call
-    const data = await fetch(SWIGGY_API_URL);
-    const json = await data.json();
-    console.log(json?.data?.cards[4]?.card?.card.gridElements);
-    console.log(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants,
-    );
-    setListOfRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants,
-    );
-    setFilteredRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants,
-    );
-  }; //getRestaurants
+  //check if there's internet or not & show message.
+  if (onlineStatus === false)
+    return <h1>Looks your offline. Check your internet connection.</h1>;
 
   return !listOfRestaurants || listOfRestaurants?.length === 0 ? (
     <Shimmer />
