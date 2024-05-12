@@ -1,9 +1,16 @@
 import React from 'react';
 import { CDN_URL } from '../utils/constant';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../utils/cartSlice';
 
 const ItemList = ({ items }) => {
   //add food item
-  const handleAddItem = (item) => {}; //handleAddItem
+  const dispatch = useDispatch();
+
+  const handleAddItem = (item) => {
+    console.log({ item });
+    dispatch(addItem(item));
+  };
 
   return (
     <div>

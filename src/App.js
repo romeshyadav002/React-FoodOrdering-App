@@ -8,8 +8,11 @@ import Contacts from './Components/Contacts';
 import RestaurantMenu from './Components/RestaurantMenu';
 import Loading from './Components/Loading';
 import UserContext from './utils/UserContext';
+import Cart from './Components/Cart';
 
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import appStore from './utils/appStore';
 //on demand lazy loading while clicking on Grocery for making it as a small bundler, check it in dist folder
 const Grocery = lazy(() => import('./Components/Grocery'));
 
@@ -40,10 +43,12 @@ const AppLayout = () => {
 
   return (
     <div>
-      <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
-        <Header />
-        <Outlet />
-      </UserContext.Provider>
+      <Provider store={appStore}>
+        <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
+          <Header />
+          <Outlet />
+        </UserContext.Provider>
+      </Provider>
     </div>
   );
 };
@@ -61,6 +66,10 @@ const appRouter = createBrowserRouter([
       {
         path: '/about',
         element: <About />,
+      },
+      {
+        path: '/cart',
+        element: <Cart />,
       },
       {
         path: '/grocery',
