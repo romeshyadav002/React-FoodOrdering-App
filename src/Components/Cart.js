@@ -30,6 +30,7 @@ const Cart = () => {
             : item.card.info.defaultPrice / 100;
           return (
             <div
+              data-testid="cartItems"
               key={item?.card.info.id}
               className="flex flex-wrap gap-5  my-2 items-center shadow-lg rounded-lg p-2"
             >

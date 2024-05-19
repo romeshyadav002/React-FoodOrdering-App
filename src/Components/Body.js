@@ -30,23 +30,41 @@ const Body = () => {
         <input
           className="border-2 border-slate-400 m-4 p-1"
           type="text"
+          data-testid="searchInput"
           value={searchRestaurant}
           onChange={(e) => {
-            setSearchRestaurant(e.target.value);
-            const filteredRes = listOfRestaurants.filter((res) => {
+            const newSearchValue = e.target.value;
+            setSearchRestaurant(newSearchValue);
+            // const filteredRes = listOfRestaurants.filter((res) => {
+            //   return res.info.name
+            //     .toLowerCase()
+            //     .includes(newSearchValue.toLowerCase());
+            // });
+            // setFilteredRestaurants(filteredRes);
+          }}
+        />
+
+        <button
+          className="bg-sky-800 text-slate-200 p-2 rounded hover:bg-sky-950"
+          onClick={() => {
+            const searchRes = listOfRestaurants.filter((res) => {
               return res.info.name
                 .toLowerCase()
                 .includes(searchRestaurant.toLowerCase());
             });
-            setFilteredRestaurants(filteredRes);
+            setFilteredRestaurants(searchRes);
           }}
-        />
+        >
+          Search
+        </button>
+
         <button
           className="bg-sky-800 text-slate-200 p-2 rounded hover:bg-sky-950"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
-              (restaurants) => restaurants.info.avgRating > 4,
+              (restaurants) => restaurants.info.avgRating > 4.3,
             );
+            // console.log({ filteredList });
             setFilteredRestaurants(filteredList); //updating the state
           }}
         >
@@ -64,7 +82,7 @@ const Body = () => {
       </section>
 
       <section className="flex flex-wrap">
-        {searchRestaurant.length > 0
+        {filteredRestaurants.length > 0
           ? //showing only filtered restaurants
             filteredRestaurants.map((restaurant) => (
               <RestaurantCard key={restaurant.info.id} resData={restaurant} />

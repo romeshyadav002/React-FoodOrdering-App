@@ -4,7 +4,7 @@ import Header from './Components/Header';
 import Body from './Components/Body';
 import About from './Components/About';
 import Error from './Components/Error';
-import Contacts from './Components/Contacts';
+import ContactUs from './Components/Contacts';
 import RestaurantMenu from './Components/RestaurantMenu';
 import Loading from './Components/Loading';
 import UserContext from './utils/UserContext';
@@ -81,7 +81,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: '/contacts',
-        element: <Contacts />,
+        element: <ContactUs />,
       },
       {
         path: '/restaurant/:resId', //: - used for dynamic routing (resId is a param which differentiates the restaurants)
